@@ -2,16 +2,140 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AI-generated news headlines from a parallel universe where history changed." />
+
+    <!-- ── Primary Meta ─────────────────────────────────────────────────── -->
+    <title>Parallel Universe News | Headlines From Timelines That Never Were</title>
+    <meta name="description" content="AI-generated breaking news from alternate timelines. What if history changed? Read today's headlines from a universe where it did." />
+    <meta name="keywords" content="parallel universe, alternate history, AI news, what if, timeline, counterfactual" />
+    <meta name="author" content="Swapnil" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ── Favicon ──────────────────────────────────────────────────────── -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- ── Open Graph (looks great when shared on LinkedIn/Twitter) ─────── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="Parallel Universe News" />
+    <meta property="og:description" content="AI-generated headlines from alternate timelines. What if history changed?" />
+    <meta property="og:image"       content="/og-preview.png" />
+    <meta property="og:url"         content="https://parallel-universe-news.vercel.app" />
+    <meta property="og:site_name"   content="Parallel Universe News" />
+
+    <!-- ── Twitter Card ─────────────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Parallel Universe News" />
+    <meta name="twitter:description" content="AI-generated headlines from alternate timelines." />
+    <meta name="twitter:image"       content="/og-preview.png" />
+
+    <!-- ── Theme Color (browser chrome on mobile) ───────────────────────── -->
+    <meta name="theme-color" content="#1a1a1a" />
+
+    <!-- ── Preconnect for faster font loading ───────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <title>Parallel Universe News</title>
+
+    <!-- ── Fonts ────────────────────────────────────────────────────────── -->
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- ── Inline critical CSS — prevents flash of unstyled content ─────── -->
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { font-size: 16px; }
+
+      body {
+        background-color: #f5f0e8;
+        color: #1a1a1a;
+        font-family: 'Inter', system-ui, sans-serif;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Loading screen — shown before React hydrates */
+      #app-loader {
+        position: fixed;
+        inset: 0;
+        background-color: #f5f0e8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        gap: 1rem;
+        transition: opacity 0.4s ease;
+      }
+
+      #app-loader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #app-loader .loader-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: clamp(2rem, 6vw, 4rem);
+        color: #1a1a1a;
+        letter-spacing: 0.02em;
+      }
+
+      #app-loader .loader-subtitle {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #6b6b6b;
+      }
+
+      #app-loader .loader-bar-track {
+        width: 200px;
+        height: 2px;
+        background-color: #d0c8b8;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      #app-loader .loader-bar {
+        height: 100%;
+        width: 40%;
+        background-color: #1a1a1a;
+        animation: slide 1.2s ease-in-out infinite;
+      }
+
+      @keyframes slide {
+        0%   { transform: translateX(-100%); }
+        100% { transform: translateX(350%); }
+      }
+    </style>
   </head>
+
   <body>
+
+    <!-- ── Loading screen (hidden once React mounts) ────────────────────── -->
+    <div id="app-loader" aria-hidden="true">
+      <div class="loader-title">The Multiverse Courier</div>
+      <div class="loader-subtitle">Tuning into alternate timelines…</div>
+      <div class="loader-bar-track">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+
+    <!-- ── React root ────────────────────────────────────────────────────── -->
     <div id="root"></div>
+
+    <!-- ── Hide loader once React hydrates ──────────────────────────────── -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const loader = document.getElementById('app-loader');
+        // Give React a tick to mount, then fade out loader
+        setTimeout(function () {
+          if (loader) loader.classList.add('hidden');
+          setTimeout(function () {
+            if (loader) loader.remove();
+          }, 400);
+        }, 300);
+      });
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
