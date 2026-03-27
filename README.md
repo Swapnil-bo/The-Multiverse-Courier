@@ -192,12 +192,6 @@ Follow the journey:
 
 ---
 
-## 📄 License
-
-MIT — build your own multiverse.
-
----
-
 <p align="center">
   <em>✦ All articles are AI-generated fiction from alternate timelines. ✦</em><br/>
   <em>Any resemblance to actual events is a multiverse coincidence.</em>
