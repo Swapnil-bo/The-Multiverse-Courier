@@ -11,18 +11,31 @@ const CATEGORY_STYLES = {
 
 const DEFAULT_STYLE = { badge: 'badge-WORLD', icon: '📰', label: 'News' }
 
+// FIX 3 — normalize combined categories like "SCIENCE | WORLD" → "SCIENCE"
+const VALID_CATEGORIES = new Set(['POLITICS', 'TECH', 'SCIENCE', 'WORLD', 'ECONOMY', 'CULTURE'])
+
+const normalizeCategory = (cat) => {
+  if (!cat) return 'WORLD'
+  const upper = cat.toUpperCase().trim()
+  if (VALID_CATEGORIES.has(upper)) return upper
+  for (const valid of VALID_CATEGORIES) {
+    if (upper.includes(valid)) return valid
+  }
+  return 'WORLD'
+}
+
 const formatTime = () => {
-  const now = new Date()
   const mins = Math.floor(Math.random() * 59) + 1
   return `${mins}m ago`
 }
 
 const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured = false }) => {
-  const [expanded, setExpanded]   = useState(false)
+  const [expanded, setExpanded]     = useState(false)
   const [bookmarked, setBookmarked] = useState(false)
-  const [copied, setCopied]       = useState(false)
+  const [copied, setCopied]         = useState(false)
 
-  const style = CATEGORY_STYLES[category?.toUpperCase()] || DEFAULT_STYLE
+  const normalizedCat = normalizeCategory(category)
+  const style  = CATEGORY_STYLES[normalizedCat] || DEFAULT_STYLE
   const timeAgo = useState(() => formatTime())[0]
 
   const handleCopy = async () => {
@@ -36,9 +49,10 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
   }
 
   return (
+    // FIX 1 — flex flex-col + h-full so all cards stretch to equal height
     <article
       className={`
-        headline-card animate-fadeInUp
+        headline-card animate-fadeInUp flex flex-col h-full
         ${featured ? 'headline-card-featured' : ''}
       `}
       style={{ animationDelay: `${index * 0.07}s`, opacity: 0 }}
@@ -50,7 +64,7 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
             {style.icon} {style.label}
           </span>
           {featured && (
-            <span className="category-badge border-ink text-ink text-xs">
+            <span className="category-badge border-ink text-ink">
               ★ Lead Story
             </span>
           )}
@@ -58,7 +72,6 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
 
         {/* Action buttons */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* Bookmark */}
           <button
             onClick={() => setBookmarked(b => !b)}
             title={bookmarked ? 'Bookmarked' : 'Bookmark'}
@@ -68,7 +81,6 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
             {bookmarked ? '🔖' : '📄'}
           </button>
 
-          {/* Copy */}
           <button
             onClick={handleCopy}
             title="Copy to clipboard"
@@ -80,7 +92,7 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
         </div>
       </div>
 
-      {/* ── Headline ─────────────────────────────────────────────────── */}
+      {/* ── Headline ──────────────────────────────────────────────────── */}
       <h2
         className={`
           playfair font-black leading-tight mb-3 cursor-pointer
@@ -95,33 +107,67 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
 
       <hr className="section-rule-thin mb-3" />
 
-      {/* ── Blurb ─────────────────────────────────────────────────────── */}
-      <p
-        className={`blurb transition-all duration-300 ${
-          expanded ? '' : 'line-clamp-3'
-        }`}
-      >
-        {blurb}
-      </p>
+      {/* ── Blurb — flex-1 pushes footer to bottom ────────────────────── */}
+      <div className="flex-1">
+        <p className={`blurb transition-all duration-300 ${expanded ? '' : 'line-clamp-3'}`}>
+          {blurb}
+        </p>
 
-      {/* Read more toggle */}
-      {blurb?.length > 180 && (
-        <button
-          onClick={() => setExpanded(e => !e)}
-          className="byline text-accent text-xs mt-1 hover:underline"
-        >
-          {expanded ? '▲ Show less' : '▼ Read more'}
-        </button>
-      )}
+        {/* FIX 5 — READ MORE / SHOW LESS properly styled */}
+        {blurb?.length > 180 && (
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="mt-2 text-xs font-semibold tracking-wide uppercase"
+            style={{
+              color: 'var(--accent)',
+              fontFamily: 'Inter, sans-serif',
+              letterSpacing: '0.08em',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+            }}
+          >
+            {expanded ? '▲ Show less' : '▼ Read more'}
+          </button>
+        )}
+      </div>
 
-      {/* ── Footer: outlet + timestamp ────────────────────────────────── */}
+      {/* ── Footer — always pinned to bottom ──────────────────────────── */}
       <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
         <div className="flex items-center gap-2">
-          {/* Outlet avatar — first letter */}
-          <div style={{width:'20px', height:'20px', background:'#1a1a1a', color:'#f5f0e8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', fontWeight:'900', flexShrink:0}}>
-            {outlet?.charAt(0) || '?'}
+          {/* FIX 2 — Outlet avatar properly styled */}
+          <div style={{
+            width: '22px',
+            height: '22px',
+            minWidth: '22px',
+            background: '#1a1a1a',
+            color: '#f5f0e8',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '11px',
+            fontWeight: '900',
+            fontFamily: 'Inter, sans-serif',
+            flexShrink: 0,
+          }}>
+            {outlet?.charAt(0)?.toUpperCase() || '?'}
           </div>
-          <span style={{fontSize:'11px', color:'#6b6b6b', maxWidth:'140px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}} title={outlet}>
+          <span
+            style={{
+              fontSize: '11px',
+              color: '#6b6b6b',
+              maxWidth: '130px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+            }}
+            title={outlet}
+          >
             {outlet}
           </span>
         </div>
@@ -129,7 +175,9 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
         <div className="flex items-center gap-2">
           <span className="byline text-ink-muted text-xs">{timeAgo}</span>
           <span className="text-gray-300">·</span>
-          <span className="byline text-xs text-accent">Alternate Timeline</span>
+          <span className="byline text-xs" style={{ color: 'var(--accent)' }}>
+            Alt. Timeline
+          </span>
         </div>
       </div>
     </article>
