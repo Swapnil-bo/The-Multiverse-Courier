@@ -114,7 +114,7 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
         </p>
 
         {/* FIX 5 — READ MORE / SHOW LESS properly styled */}
-        {blurb?.length > 180 && (
+        {blurb?.length > 100 && (
           <button
             onClick={() => setExpanded(e => !e)}
             className="mt-2 text-xs font-semibold tracking-wide uppercase"
