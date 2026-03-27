@@ -62,16 +62,51 @@ const StatsBar = ({ headlines, generationTime }) => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 mb-6">
-      <div className="bg-ink text-newsprint px-4 py-2 flex flex-wrap items-center gap-4 text-xs font-mono animate-fadeIn">
-        <span>📰 {headlines.length} Headlines</span>
-        <span className="text-gray-400">·</span>
-        <span>📡 {outlets.length} Outlets</span>
-        <span className="text-gray-400">·</span>
-        <span>🗂 {categories.length} Categories</span>
-        <span className="text-gray-400">·</span>
-        <span>⚡ Generated in {generationTime}s</span>
-        <span className="text-gray-400">·</span>
-        <span className="text-accent">✦ Alternate Timeline Verified</span>
+      <div
+        className="animate-fadeIn"
+        style={{
+          background: '#1a1a1a',
+          color: '#f5f0e8',
+          padding: '0.6rem 1.25rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          gap: '0.4rem 1rem',
+        }}
+      >
+        {[
+          { icon: '📰', label: `${headlines.length} Headlines` },
+          { icon: '📡', label: `${outlets.length} Outlets` },
+          { icon: '🗂', label: `${categories.length} Categories` },
+          { icon: '⚡', label: `Generated in ${generationTime}s` },
+        ].map(({ icon, label }, i) => (
+          <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            {i > 0 && (
+              <span style={{ color: '#555', fontSize: '10px' }}>·</span>
+            )}
+            <span style={{ fontSize: '12px' }}>{icon}</span>
+            <span style={{
+              fontSize: '11px',
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+            }}>
+              {label}
+            </span>
+          </span>
+        ))}
+        <span style={{ color: '#555', fontSize: '10px' }}>·</span>
+        <span style={{
+          fontSize: '11px',
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 700,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: '#c41e3a',
+        }}>
+          ✦ Alternate Timeline Verified
+        </span>
       </div>
     </div>
   )
