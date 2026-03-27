@@ -118,10 +118,10 @@ const HeadlineCard = ({ headline, blurb, category, outlet, index = 0, featured =
       <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
         <div className="flex items-center gap-2">
           {/* Outlet avatar — first letter */}
-          <div className="w-5 h-5 bg-ink text-newsprint flex items-center justify-center text-xs font-black shrink-0">
+          <div style={{width:'20px', height:'20px', background:'#1a1a1a', color:'#f5f0e8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', fontWeight:'900', flexShrink:0}}>
             {outlet?.charAt(0) || '?'}
           </div>
-          <span className="byline text-ink-muted text-xs truncate max-w-[140px]" title={outlet}>
+          <span style={{fontSize:'11px', color:'#6b6b6b', maxWidth:'140px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}} title={outlet}>
             {outlet}
           </span>
         </div>

@@ -604,14 +604,16 @@ export default function App() {
       </div>
 
       {/* ── Mobile sidebar ───────────────────────────────────────────────── */}
-      <Sidebar
-        history={history}
-        currentEvent={currentEvent}
-        onReload={handleReload}
-        funFact={funFact}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+      <div className="lg:hidden">
+        <Sidebar
+          history={history}
+          currentEvent={currentEvent}
+          onReload={handleReload}
+          funFact={funFact}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      </div>
 
       {/* ── Toast ────────────────────────────────────────────────────────── */}
       {toast && (
