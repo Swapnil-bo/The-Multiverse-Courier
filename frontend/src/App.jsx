@@ -401,7 +401,7 @@ export default function App() {
             <HeadlineCard {...lead} index={0} featured />
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
           {rest.map((h, i) => (
             <HeadlineCard key={i + 1} {...h} index={i + 1} />
           ))}
